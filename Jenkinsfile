@@ -1,16 +1,31 @@
 pipeline {
     agent any
     environment {
-        APP_NAME = 'demo'
+        APP_ENV = 'test'
     }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm 
+            }
+        }
         stage('Build') {
-            environment {
-                BUILD_MODE = 'production'
+            steps {
+                sh 'echo Building'
             }
-            steps { 
-                sh 'echo $APP_NAME $BUILD_MODE'
+        }
+        stage('Test') {
+            steps {
+                sh 'echo Running tests'
             }
+        }
+    }
+    post {
+        success {
+            echo 'All stages passed'
+        }
+        failure {
+            echo 'Something failed'
         }
     }
 }
